@@ -17,7 +17,7 @@
   };
 
   // generujemy listę książek - START
-  function render () {
+  function render() {
 
     // przechodzimy po wszystkich książkach
     for (let eachBook of dataSource.books) {
@@ -41,33 +41,52 @@
   // dodajemy książki do ulubionych - START
   const favoriteBooks = [];
   
-  function initActions () {
+
+  function initActions() {
 
     // tworzymy referencję do listy wszystkich elementów .book__image w liście .booksList
     // najpierw budujemy obiekt w 'select'
     const booksImages = document.querySelectorAll(select.containerOf.images);
 
+    // przechodzimy przez wszystkie elementy
     for (let bookImage of booksImages) {
 
-      // do każdego elementu dodajemy nasłuchiwacz, który po
+      // i do każdego dodajemy nasłuchiwacz, który po
       // wykryciu doubleclicka uruchomi funckję
       bookImage.addEventListener('dblclick', function (event) {
 
         // która zatrzyma domyślne zachowanie przeglądarki
         event.preventDefault();
 
-        // doda do klikniętego elementu klasę
-        bookImage.classList.add('favorite');
-
-        // pobierze z jego data-id identyfikator książki
+        // następnie pobierze z jego data-id identyfikator książki
         const bookId = bookImage.getAttribute('data-id');
 
-        // i doda ten identyfikator do favoriteBooks
-        favoriteBooks.push(bookId);
+        // sprawdzi czy tablica favoriteBook zawiera już ten identyfikator
+        if (!favoriteBooks.includes(bookId)) {
+
+          // jeśi nie, to doda go do favoriteBooks
+          favoriteBooks.push(bookId);
+
+          // oraz doda do klikniętego elementu klasę favorite
+          bookImage.classList.add('favorite');
+
+        } else {
+
+          // a jeśli jest już jest na tablicy, to przypisze identyfikator do stałej
+          const indexOfbookId = favoriteBooks.indexOf(bookId);
+
+          // usunie go z tablicy favoriteBooks
+          favoriteBooks.splice(indexOfbookId, 1);
+
+          // i usunie z klikniętego elementu klasę favorite
+          bookImage.classList.remove('favorite');
+        }
       });
     }
   }
   // dodajemy książki do ulubionych - END
+
+  console.log('favouriteBooks: ', favoriteBooks);
 
   render();
   initActions();
