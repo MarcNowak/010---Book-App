@@ -8,6 +8,7 @@
 
     containerOf: {
       booksList: '.books-list',
+      images: 'books-list .book__image',
     },
   };
 
@@ -15,6 +16,9 @@
     bookTemplate: Handlebars.compile(document.querySelector(select.templateOf.bookTemplate).innerHTML),
   };
 
+  // const booksList = document.querySelector('.books-list');
+
+  // generujemy listę książek - START
   function render () {
 
     // przechodzimy po wszystkich książkach
@@ -33,8 +37,45 @@
       // const bookListContainer = document.querySelector(select.containerOf.booksList);
       // bookListContainer.appendChild(elementDOM);
     }
+  }
+  // generujemy listę książek - END
+
+  // dodajemy książki do ulubionych - START
+
+  const favoriteBooks = [];
+  console.log('favoriteBooks', favoriteBooks);
+
+  function initActions () {
+
+    // tworzymy referencję do listy wszystkich elementów .book__image w liście .booksList
+    const booksImages = document.querySelectorAll(select.containerOf.images);
+
+    for (let bookImage of booksImages) {
+
+      // do każdego elementu dodajemy nasłuchiwacz, który po
+      // wykryciu doubleclicka uruchomi funckję
+      bookImage.addEventListener('dblclick', function (event) {
+
+        // która zatrzyma domyślne zachowanie przeglądarki
+        event.preventDefault();
+
+        // doda do klikniętego elementu klasę
+        bookImage.classList.add('favorite');
+
+        // pobierze z jego data-id identyfikator książki
+        const bookId = bookImage.getAttribute('data-id');
+
+        // i doda ten identyfikator do favoriteBooks
+        favoriteBooks.push(bookId);
+
+      });
+    }
+
 
   }
 
+  // dodajemy książki do ulubionych - END
+
   render();
+  initActions();
 }
