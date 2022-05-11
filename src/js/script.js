@@ -41,7 +41,6 @@
   // dodajemy książki do ulubionych - START
   const favoriteBooks = [];
   
-
   function initActions() {
 
     // tworzymy referencję do listy wszystkich elementów .book__image w liście .booksList
@@ -59,7 +58,7 @@
         event.preventDefault();
 
         // następnie pobierze z jego data-id identyfikator książki
-        const bookId = bookImage.getAttribute('data-id');
+        const bookId = event.target.offsetParent.getAttribute('data-id');
 
         // sprawdzi czy tablica favoriteBook zawiera już ten identyfikator
         if (!favoriteBooks.includes(bookId)) {
@@ -68,7 +67,7 @@
           favoriteBooks.push(bookId);
 
           // oraz doda do klikniętego elementu klasę favorite
-          bookImage.classList.add('favorite');
+          event.target.offsetParent.classList.add('favorite');
 
         } else {
 
@@ -79,7 +78,7 @@
           favoriteBooks.splice(indexOfbookId, 1);
 
           // i usunie z klikniętego elementu klasę favorite
-          bookImage.classList.remove('favorite');
+          event.target.offsetParent.classList.remove('favorite');
         }
       });
     }
