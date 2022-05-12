@@ -8,7 +8,7 @@
 
     containerOf: {
       booksList: '.books-list',
-      images: '.books-list .book__image',
+      // images: '.books-list .book__image',
     },
   };
 
@@ -40,22 +40,28 @@
 
   // dodajemy książki do ulubionych - START
   const favoriteBooks = [];
-  
+
   function initActions() {
 
     // tworzymy referencję do listy wszystkich elementów .book__image w liście .booksList
     // najpierw budujemy obiekt w 'select'
-    const booksImages = document.querySelectorAll(select.containerOf.images);
+    // const booksImages = document.querySelectorAll(select.containerOf.images);
+    const booksContainer = document.querySelector(select.containerOf.booksList);
 
     // przechodzimy przez wszystkie elementy
-    for (let bookImage of booksImages) {
+    // for (let bookImage of booksImages) {
 
-      // i do każdego dodajemy nasłuchiwacz, który po
-      // wykryciu doubleclicka uruchomi funckję
-      bookImage.addEventListener('dblclick', function (event) {
+    // i do każdego dodajemy nasłuchiwacz, który po
+    // wykryciu doubleclicka uruchomi funckję
+    // bookImage.addEventListener('dblclick', function (event) {
 
-        // która zatrzyma domyślne zachowanie przeglądarki
-        event.preventDefault();
+    // ustawiany nasłuchiwacz na cały kontener
+    booksContainer.addEventListener('dblclick', function (event) {
+
+      // która zatrzyma domyślne zachowanie przeglądarki
+      event.preventDefault();
+
+      if (event.target.offsetParent.classList.contains('book__image')) {
 
         // następnie pobierze z jego data-id identyfikator książki
         const bookId = event.target.offsetParent.getAttribute('data-id');
@@ -80,12 +86,13 @@
           // i usunie z klikniętego elementu klasę favorite
           event.target.offsetParent.classList.remove('favorite');
         }
-      });
-    }
+      }
+    });
+    // }
   }
   // dodajemy książki do ulubionych - END
 
-  console.log('favouriteBooks: ', favoriteBooks);
+  // console.log('favouriteBooks: ', favoriteBooks);
 
   render();
   initActions();
