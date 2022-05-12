@@ -10,6 +10,10 @@
       booksList: '.books-list',
       // images: '.books-list .book__image',
     },
+
+    filtersOf: {
+      form: '.filters',
+    },
   };
 
   const templates = {
@@ -41,12 +45,16 @@
   // dodajemy książki do ulubionych - START
   const favoriteBooks = [];
 
+  //  FILTROWANIE: dodajemy pustą tablicę
+  filters = [];
+
   function initActions() {
 
     // tworzymy referencję do listy wszystkich elementów .book__image w liście .booksList
     // najpierw budujemy obiekt w 'select'
     // const booksImages = document.querySelectorAll(select.containerOf.images);
     const booksContainer = document.querySelector(select.containerOf.booksList);
+
 
     // przechodzimy przez wszystkie elementy
     // for (let bookImage of booksImages) {
@@ -55,7 +63,7 @@
     // wykryciu doubleclicka uruchomi funckję
     // bookImage.addEventListener('dblclick', function (event) {
 
-    // ustawiany nasłuchiwacz na cały kontener
+    // ustawiamy nasłuchiwacz na cały kontener
     booksContainer.addEventListener('dblclick', function (event) {
 
       // która zatrzyma domyślne zachowanie przeglądarki
@@ -88,11 +96,40 @@
         }
       }
     });
-    // }
-  }
-  // dodajemy książki do ulubionych - END
+    // console.log('favouriteBooks: ', favoriteBooks);
+    // dodajemy książki do ulubionych - END
 
-  // console.log('favouriteBooks: ', favoriteBooks);
+    // FILTROWANIE - START
+
+    // przygotowujemy referencję do formularza w .filters
+    const filter = document.querySelector(select.filtersOf.form);
+
+    // na formularz ustawiamy nasłuchiwacz
+    // który po kliknięciu uruchomi funckję
+    filter.addEventListener('click', function (event) {
+
+      // która zatrzyma domyślne zachowanie przeglądarki
+      event.preventDefault();
+
+      // zapisujemy wartość eventu do stałej
+      // const filterValue = event.target.value;
+
+      // sprawdzi poniższe warunki
+      if (
+        event.target.tagName == 'INPUT'
+        &&
+        event.target.type == 'checkbox'
+        &&
+        event.target.name == 'filter') {
+
+        // i wyświetli wartość klikniętego elementu
+        console.log('Filtered by: ', event.target.value);
+      }
+    });
+    // FILTROWANIE - END
+
+  }
+  // }
 
   render();
   initActions();
