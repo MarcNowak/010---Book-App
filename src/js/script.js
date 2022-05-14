@@ -20,6 +20,7 @@
     bookTemplate: Handlebars.compile(document.querySelector(select.templateOf.bookTemplate).innerHTML),
   };
 
+  
   // generujemy listę książek - START
   function render() {
 
@@ -27,7 +28,17 @@
     for (let eachBook of dataSource.books) {
 
       // dla każdej książki generujemy HTML na podstawie szablonu
-      const generatedHTML = templates.bookTemplate(eachBook);
+      const ratingBgc = determineRatingBgc(eachBook.rating);
+      const ratingWidth = eachBook.ratingBgc * 10;
+      const generatedHTML = templates.bookTemplate({
+        id: eachBook.id,
+        price: eachBook.price,
+        name: eachBook.name,
+        image: eachBook.image,
+        rating: eachBook.rating,
+        ratingBgc,
+        ratingWidth,
+      });
 
       // generujemy element DOM
       const elementDOM = utils.createDOMFromHTML(generatedHTML);
@@ -187,6 +198,21 @@
         item.classList.remove('hidden');
       }
     }
+  }
+
+  function determineRatingBgc (rating) {
+    let background = '';
+
+    if(rating <= 6){
+      background = 'linear-gradient(to bottom,  #fefcea 0%, #f1da36 100%)';
+    }else if(rating > 6 && rating <= 8){
+      background = 'linear-gradient(to bottom, #b4df5b 0%,#b4df5b 100%)';
+    }else if(rating > 8 && rating <= 9){
+      background = 'linear-gradient(to bottom, #299a0b 0%, #299a0b 100%)';
+    }else if(rating > 9){
+      background = 'linear-gradient(to bottom, #ff0084 0%,#ff0084 100%)';
+    }
+    return background;
   }
 
   render();
