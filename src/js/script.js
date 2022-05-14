@@ -46,7 +46,7 @@
   const favoriteBooks = [];
 
   //  FILTROWANIE: dodajemy pustą tablicę
-  filters = [];
+  const filters = [];
 
   function initActions() {
 
@@ -109,10 +109,11 @@
     filter.addEventListener('click', function (event) {
 
       // która zatrzyma domyślne zachowanie przeglądarki
-      event.preventDefault();
+      // czyli zaznaczanie checkboxów
+      // event.preventDefault();
 
       // zapisujemy wartość eventu do stałej
-      // const filterValue = event.target.value;
+      const filterValue = event.target.value;
 
       // sprawdzi poniższe warunki
       if (
@@ -122,14 +123,71 @@
         &&
         event.target.name == 'filter') {
 
-        // i wyświetli wartość klikniętego elementu
-        console.log('Filtered by: ', event.target.value);
+        // jeśli elelemnt jest zaznaczony
+        if (event.target.checked == true) {
+
+          // doda go do tablicy filters
+          filters.push(filterValue);
+          console.log(filters);
+
+          // w przeciwnym wypadku (odznaczony)
+        } else {
+
+          // przypisze ten index do stałej
+          const indexOfFilter = filters.indexOf(filterValue);
+
+          // i usunie go z tablicy filters
+          filters.splice(indexOfFilter, 1);
+
+          // wersja usuwania bez przypisywania do stałych:
+          // filters.splice(filters.indexOf(event.target.value), 1);
+
+          console.log(filters);
+        }
+
+
       }
+      filterBooks();
     });
     // FILTROWANIE - END
-
   }
   // }
+
+  function filterBooks(){
+
+    // przechodzimy po wszystkich elementach dataSource.book
+    for(let book of dataSource.books){
+
+      // na podstawie zmiennej shouleBeHidden ustalimy
+      // czy trzeba do książki dodać klasę hidden
+      let shouldBeHidden = false;
+
+      // w tablicy filter za pomocą pętli sprawdzamy
+      for(const filter of filters){
+
+        // czy dana właściwość (filtr)
+        // powinna mieć wartość true a jej nie ma
+        if(!book.details[filter]){
+
+          // należy zmienić wartość na true
+          shouldBeHidden = true;
+
+          // i zakończyć działanie pętki
+          break;
+        }
+      }
+      const id = book.id;
+      console.log(id);
+       
+      const item = document.querySelector('.book__image[data-id="'+id+'"]');
+    
+      if(shouldBeHidden == true){
+        item.classList.add('hidden');
+      } else if (shouldBeHidden == false){
+        item.classList.remove('hidden');
+      }
+    }
+  }
 
   render();
   initActions();
